@@ -88,12 +88,7 @@ export default function HeroSection() {
               >
                 Launch Project →
               </Link>
-              <Link
-                href="/login"
-                className="px-8 py-4 rounded-full border border-gray-700 text-gray-300  hover:bg-gray-200 hover:text-black transition"
-              >
-                View Portal
-              </Link>
+             
             </div>
           </div>
 
