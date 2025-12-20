@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { signIn } from "next-auth/react"; // ← ADD THIS IMPORT
+import { signIn } from "next-auth/react"; 
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function RegisterPage() {
   // ← UPDATED: Now uses NextAuth signIn
   const handleGoogleRegister = () => {
     signIn("google", { 
-      callbackUrl: "/" // Redirect to home after Google login
+      callbackUrl: "/" 
     });
   };
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,8 +36,9 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = async () => {
-    // replace with your real Google OAuth login route
-    window.location.href = "/auth/google";
+      signIn("google", { 
+          callbackUrl: "/" 
+        });
   };
 
   return (
