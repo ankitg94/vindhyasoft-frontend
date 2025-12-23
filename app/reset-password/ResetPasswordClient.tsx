@@ -19,7 +19,6 @@ export default function ResetPasswordClient() {
   useEffect(() => {
     const urlToken = searchParams.get("token");
 
-    // Wait for searchParams to be populated
     if (!urlToken && !token) {
       return;
     }
@@ -32,8 +31,6 @@ export default function ResetPasswordClient() {
     }
 
     setToken(urlToken);
-
-    // Remove query params without losing the token in state
     router.replace(pathname);
   }, [searchParams, pathname, router, token]);
 
@@ -51,14 +48,18 @@ export default function ResetPasswordClient() {
       return;
     }
 
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
     try {
       setLoading(true);
       await api.post("/auth/reset-password", {
         token,
         password,
-        confirmPassword,
       });
-      router.push("/login");
+      router.push("/login?reset=success");
     } catch (err: any) {
       setError(err.response?.data?.error || "Reset failed");
     } finally {
@@ -81,7 +82,8 @@ export default function ResetPasswordClient() {
           <input
             type="password"
             required
-            placeholder="New password"
+            minLength={6}
+            placeholder="New password (min 6 chars)"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full rounded-xl border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100"
@@ -98,8 +100,8 @@ export default function ResetPasswordClient() {
 
           <button
             type="submit"
-            disabled={loading}
-            className="w-full rounded-xl bg-blue-600 py-2 text-sm font-semibold text-white disabled:opacity-60"
+            disabled={loading || !token}
+            className="w-full rounded-xl bg-blue-600 py-2 text-sm font-semibold text-white disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? "Resetting..." : "Reset Password"}
           </button>
