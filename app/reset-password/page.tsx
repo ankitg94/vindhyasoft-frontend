@@ -1,5 +1,5 @@
 "use client";
-export const dynamic = "force-dynamic";
+
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import api from "@/lib/api";
@@ -14,12 +14,12 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    // Remove token from URL for security
-    if (token) {
-      window.history.replaceState({}, "", "/reset-password");
-    }
-  }, [token]);
+//   useEffect(() => {
+//     // Remove token from URL for security
+//     if (token) {
+//       window.history.replaceState({}, "", "/reset-password");
+//     }
+//   }, [token]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
