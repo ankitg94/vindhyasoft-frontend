@@ -1,7 +1,7 @@
 "use client";
-
+export const dynamic = 'force-dynamic';
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import api from "@/lib/api";
 
 export default function ResetPasswordPage() {
