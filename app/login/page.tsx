@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
@@ -88,12 +87,13 @@ export default function LoginPage() {
                 <label className="block text-sm font-medium text-slate-200">
                   Password
                 </label>
-                <button
-                  type="button"
-                  className="text-[11px] text-blue-300 hover:text-blue-200 underline underline-offset-2"
-                >
-                  Forgot password?
-                </button>
+              <Link
+  href="/forgot-password"
+  className="text-[11px] text-blue-300 hover:text-blue-200 underline underline-offset-2"
+>
+  Forgot password?
+</Link>
+
               </div>
               <input
                 type="password"
