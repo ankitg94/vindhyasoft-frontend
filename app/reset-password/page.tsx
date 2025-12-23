@@ -1,43 +1,55 @@
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
+
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState} from "react";
+import { useEffect, useState } from "react";
 import api from "@/lib/api";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
 
+  const [token, setToken] = useState<string | null>(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-//   useEffect(() => {
-//     // Remove token from URL for security
-//     if (token) {
-//       window.history.replaceState({}, "", "/reset-password");
-//     }
-//   }, [token]);
+  useEffect(() => {
+    const urlToken = searchParams.get("token");
+    if (!urlToken) {
+      setError("Invalid or missing reset token");
+      return;
+    }
+
+    // Save token in state so you don't depend on the URL anymore
+    setToken(urlToken);
+
+    // Safely remove query params using Next router
+    router.replace("/reset-password");
+  }, [searchParams, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
+    if (!token) {
+      setError("Invalid or missing reset token");
+      return;
+    }
+
     if (password !== confirmPassword) {
-      return setError("Passwords do not match");
+      setError("Passwords do not match");
+      return;
     }
 
     try {
       setLoading(true);
-
       await api.post("/auth/reset-password", {
         token,
         password,
         confirmPassword,
       });
-
       router.push("/login");
     } catch (err: any) {
       setError(err.response?.data?.error || "Reset failed");
@@ -45,14 +57,6 @@ export default function ResetPasswordPage() {
       setLoading(false);
     }
   };
-
-  if (!token) {
-    return (
-      <p className="text-center text-red-400 mt-20">
-        Invalid or missing reset token
-      </p>
-    );
-  }
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-slate-950 px-4">
